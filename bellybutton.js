@@ -1,46 +1,59 @@
-var option = "";
-var dataBelly;
+// Read json file data
+d3.json("samples.json").then(function(data) {
+  console.log(data.samples.filter(d => d.id === "940"));
+  console.log(data);
 
-function disp() {
-  d3.json("samples.json").then(function(data)) {
-    dataBelly = data;
-    console.log(dataBelly);
-    displayMetaData(940,dataBelly);
-    displayBubbleChart(940,dataBelly);
-    displayHBarChart(940,dataBelly);
-
-
-  }
-}
-
-
-
-
-
-
-// d3.json("samples.json").then((importedData) => {
-//   // console.log(importedData)
-//   var data = importedData;
-
-function unpack(rows, index) {
-  return rows.map(function(row) {
-    return row[index];
-  });
-}
-
-// Grab values from the data json object to build the plots
-function buildPlot() {
-  d3.json("samples.json").then(function(data) {
-    // console.log(data.samples.filter(s => s.id === "940"));
-    console.log(data);
-
-  // Add ids to dropdown menu
+  // Dropdown menu
   var dropDown = d3.select("#selDataset");
   data.names.forEach(function(id) {
     dropDown.append("option")
       .attr("value", id)
       .text(id);
   });
+
+  // Dropdown and Form event
+  var dropdown = d3.select("#selDataset");
+  var form = d3.select("#form");
+  dropdown.on("change", genCharts);
+  form.on("submit", genCharts);
+
+  //Function to get selected id
+  function bellyChart() {
+    d3.event.preventDefault();
+    var currentId = d3.select("#selDataset").node().value;
+    console.log(currentId);
+
+
+
+
+
+
+
+// var option = "";
+// var dataBelly;
+
+// function disp() {
+//   d3.json("samples.json").then(function(data)) {
+//     dataBelly = data;
+//     console.log(dataBelly);
+//     displayMetaData(940,dataBelly);
+//     displayBubbleChart(940,dataBelly);
+//     displayHBarChart(940,dataBelly);
+
+
+//   }
+// }
+
+// d3.json("samples.json").then((importedData) => {
+//   // console.log(importedData)
+//   var data = importedData;
+
+// function unpack(rows, index) {
+//   return rows.map(function(row) {
+//     return row[index];
+//   });
+// }
+
 
     // Grab values from the data json object to build the plots
     // var patientId = '940';
@@ -72,8 +85,7 @@ function buildPlot() {
   // console.log(sample);
 
   // Plotly.newPlot("bar", data, layout);
- });
-}
-console.log("one world");
-
-buildPlot();
+//  });
+// }
+// console.log("one world");
+// buildPlot();
