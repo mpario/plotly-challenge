@@ -23,68 +23,46 @@ d3.json("samples.json").then(function(data) {
     var currentId = d3.select("#selDataset").node().value;
     console.log(currentId);
 
-
-
-
-
-
-
-// var option = "";
-// var dataBelly;
-
-// function disp() {
-//   d3.json("samples.json").then(function(data)) {
-//     dataBelly = data;
-//     console.log(dataBelly);
-//     displayMetaData(940,dataBelly);
-//     displayBubbleChart(940,dataBelly);
-//     displayHBarChart(940,dataBelly);
-
-
-//   }
-// }
-
-// d3.json("samples.json").then((importedData) => {
-//   // console.log(importedData)
-//   var data = importedData;
-
-// function unpack(rows, index) {
-//   return rows.map(function(row) {
-//     return row[index];
-//   });
-// }
-
-
-    // Grab values from the data json object to build the plots
-    // var patientId = '940';
-    // var sample = data.samples.filter(s => patientId == s.id).slice(data.samples.otu_ids(0,9)); 
+  // Horizontal Bar Chart
     
+    // Array for selected id
+    var selectId = [];
+    var currentSam = data.samples.filter(l => l.id === currentId)[0];
+    console.log(currentSam);
 
-    // .sample_values;
-    /*var labels = dataSet.samples.otu_ids;
-    var hoverText = dataSet.samples.otu_labels;
-    // var endDate = data.dataset.end_date;
-    // var dates = unpack(data.dataset.data, 0);
-    // var closingPrices = unpack(data.dataset.data, 4);
+    // Loop samples data to create array
+    for (var i = 0; i < currentSam.otu_ids.length; i++) {
+      var otu = {};
+      otu.otuID = currentSam.otu_ids[i];
+      otu.otuLabel = currentSam.otu_labels[i];
+      otu.sampleValue = currentSam.sample_values[i];
+      selectId.push(otu);
+    }
+    console.log(selectId);
 
-    var trace1 = {
+    // Sort and split samples data to get top 10 otu
+    var topOtu = selectId.sort(function topFunction(first, two) {
+      return two.sampleValue - one.sampleValue;
+    });
+
+    topOtu = topOtu.slice(0,10);
+    console.log(topOtu);
+    console.log(topOtu[0].otuID);
+
+    // Create components to graph with plotly
+    var horBar = {
+      x: topOtu.map(otu => otu.sampleValue),
+      y: topOtu.map(otu => `OTU ${otu.otuID}`),
       type: "bar",
-      x: labels,
-      y: values,
-      orientation: 'h',
+      orientation: "h",
+      text: topOtu.map(otu => otu.otuLabel)
     };
 
-    var data = [trace1];
+    var horData = [horBar];
 
-    var layout = {
-      title: "Top 10 OTUs Found",
-      xaxis: labels,
-      yaxis: values
-      };
-*/
-  // console.log(sample);
+    var horLayout = {
+      title: "Top 10 Bacteria Cultures Found",
+      yaxis: {autorange: "reversed"}
+    };
 
-  // Plotly.newPlot("bar", data, layout);
-//  });
-// }
-// console.log("one world");
+    Plotly.newPlot("bar", horData, horLayout);
