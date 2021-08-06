@@ -22,7 +22,7 @@ d3.json("samples.json").then(function(data) {
     d3.event.preventDefault();
     var currentId = d3.select("#selDataset").node().value;
     console.log(currentId);
-  };
+  
 
   // Horizontal Bar Chart
     
@@ -70,7 +70,7 @@ d3.json("samples.json").then(function(data) {
   
   // Bubble Chart
 
-  var bubSize = 14;
+  var bubSize = 13;
   
   var traceBub = {
     x : selectId.map(otu => otu.otuID),
@@ -93,4 +93,6 @@ d3.json("samples.json").then(function(data) {
 
   // Create bubble chart
   Plotly.newPlot("bubble", bubData, bubLayout);
+
+}
 });
