@@ -42,7 +42,7 @@ d3.json("samples.json").then(function(data) {
   console.log(selectId);
 
   // Sort and split samples data to get top 10 otu
-  var topOtu = selectId.sort(function topFunction(first, two) {
+  var topOtu = selectId.sort(function topFunction(one, two) {
     return two.sampleValue - one.sampleValue;
   });
 
